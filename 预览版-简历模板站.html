@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>简历模板站 - 预览版（零依赖单文件）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eff6ff', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .a4 { width: 210mm; min-height: 297mm; padding: 18mm 20mm; background: white; box-shadow: 0 2px 16px rgba(0,0,0,.12); margin: 0 auto; box-sizing: border-box; }
+    @media screen { .a4 { transform: scale(0.62); transform-origin: top center; } }
+    @media print { .a4 { box-shadow: none; margin: 0; } body { background: white; } .no-print { display: none !important; } }
+    .tab-btn.active { background: #2563eb; color: white; }
+    .skill-bar { background: linear-gradient(90deg, #2563eb, #3b82f6); }
+    .fade-in { animation: fadeIn .4s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+  <!-- 顶部导航 -->
+  <header class="bg-white shadow-sm sticky top-0 z-50 no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center text-white font-bold">简</div>
+        <h1 class="text-lg font-bold text-slate-800">简历模板站 <span class="text-xs text-amber-600 ml-1">预览版</span></h1>
+      </div>
+      <nav class="flex gap-2 flex-wrap">
+        <button onclick="showPage('home')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 active">首页</button>
+        <button onclick="showPage('templates')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">模板</button>
+        <button onclick="showPage('builder')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">简历生成</button>
+        <button onclick="showPage('pro')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">Pro会员</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- ============= 页面 1：首页 ============= -->
+    <div id="page-home" class="page fade-in">
+      <section class="relative bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 rounded-3xl p-10 text-white overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-20 translate-x-20"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-20 -translate-x-10"></div>
+        <div class="relative z-10 max-w-2xl">
+          <h2 class="text-5xl font-bold leading-tight mb-4">专业简历<br/>一键生成</h2>
+          <p class="text-xl opacity-90 mb-6">精美模板 · 在线编辑 · 导出PDF<br/>助你斩获理想 Offer</p>
+          <div class="flex gap-3 flex-wrap">
+            <button onclick="showPage('builder')" class="bg-white text-blue-700 px-8 py-3.5 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all">立即制作简历 →</button>
+            <button onclick="showPage('templates')" class="bg-white/20 backdrop-blur text-white px-8 py-3.5 rounded-xl font-bold text-lg border border-white/30 hover:bg-white/30 transition-all">浏览模板</button>
+          </div>
+          <div class="mt-8 flex gap-8 text-sm opacity-90">
+            <div><div class="text-3xl font-bold">50+</div><div>精美模板</div></div>
+            <div><div class="text-3xl font-bold">10万+</div><div>用户信赖</div></div>
+            <div><div class="text-3xl font-bold">3分钟</div><div>快速制作</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12">
+        <h3 class="text-3xl font-bold text-slate-800 mb-2">热门模板</h3>
+        <p class="text-slate-500 mb-6">精选优质简历模板，点击预览效果</p>
+        <div id="featured-templates" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5"></div>
+      </section>
+
+      <section class="mt-16">
+        <h3 class="text-3xl font-bold text-slate-800 mb-8 text-center">为什么选择我们</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow border border-slate-100">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-5">
+              <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <h4 class="text-xl font-bold text-slate-800 mb-2">海量精美模板</h4>
+            <p class="text-slate-500 leading-relaxed">覆盖简约、专业、创意、技术等多种风格，适配各行业岗位需求。</p>
+          </div>
+          <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow border border-slate-100">
+            <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mb-5">
+              <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </div>
+            <h4 class="text-xl font-bold text-slate-800 mb-2">在线实时编辑</h4>
+            <p class="text-slate-500 leading-relaxed">左侧表单填写，右侧 A4 纸实时预览所见即所得，无需安装任何软件。</p>
+          </div>
+          <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow border border-slate-100">
+            <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center mb-5">
+              <svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </div>
+            <h4 class="text-xl font-bold text-slate-800 mb-2">一键导出 PDF</h4>
+            <p class="text-slate-500 leading-relaxed">排版专业、无水印，HR 打开就惊艳；可投递到任意招聘平台。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-16 bg-gradient-to-r from-slate-900 to-slate-700 rounded-3xl p-12 text-white text-center">
+        <h3 class="text-3xl md:text-4xl font-bold mb-4">准备好了吗？开始你的简历之旅</h3>
+        <p class="text-slate-300 mb-8 text-lg">只需要 3 分钟，就能拥有一份专业美观的简历</p>
+        <button onclick="showPage('builder')" class="bg-white text-slate-900 px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:scale-105 transition-all">立即开始免费制作 →</button>
+      </section>
+    </div>
+
+    <!-- ============= 页面 2：模板列表 ============= -->
+    <div id="page-templates" class="page hidden">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <aside class="lg:w-64 bg-white rounded-2xl p-5 shadow-sm h-fit border border-slate-100">
+          <h3 class="font-bold text-slate-800 mb-4">筛选条件</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="text-sm text-slate-500 mb-2">风格</div>
+              <div class="space-y-1 text-sm" id="filter-cat"></div>
+            </div>
+            <div>
+              <div class="text-sm text-slate-500 mb-2">会员</div>
+              <div class="space-y-1 text-sm" id="filter-pro"></div>
+            </div>
+          </div>
+          <button onclick="resetFilter()" class="w-full mt-6 py-2 border border-slate-200 text-slate-600 rounded-lg text-sm hover:bg-slate-50">重置筛选</button>
+        </aside>
+        <section class="flex-1">
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-2xl font-bold text-slate-800">全部模板</h2>
+            <div class="text-sm text-slate-500"><span id="tpl-count">0</span> 套模板</div>
+          </div>
+          <div id="tpl-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ============= 页面 3：简历生成器 ============= -->
+    <div id="page-builder" class="page hidden">
+      <div class="flex flex-col lg:flex-row gap-6">
+
+        <!-- 左侧表单区 -->
+        <div class="lg:w-[48%] bg-white rounded-2xl shadow-sm p-6 max-h-[85vh] overflow-y-auto border border-slate-100">
+          <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-800">填写你的简历</h2>
+              <p class="text-xs text-slate-500">实时预览右侧效果，填写完可导出 PDF</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+
+            <!-- 基础信息 -->
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-6 h-6 bg-blue-100 text-blue-600 text-xs font-bold rounded flex items-center justify-center">1</div>
+                <h3 class="font-bold text-slate-800">基本信息</h3>
+              </div>
+              <div class="grid grid-cols-2 gap-3 pl-8">
+                <div class="col-span-2"><label class="text-xs text-slate-500">姓名</label><input id="f-name" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" value="张伟" /></div>
+                <div><label class="text-xs text-slate-500">岗位</label><input id="f-job" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" value="高级前端工程师" /></div>
+                <div><label class="text-xs text-slate-500">手机</label><input id="f-phone" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" value="13800138000" /></div>
+                <div><label class="text-xs text-slate-500">邮箱</label><input id="f-email" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" value="zhangwei@email.com" /></div>
+                <div class="col-span-2"><label class="text-xs text-slate-500">现居地</label><input id="f-city" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" value="上海" /></div>
+                <div class="col-span-2"><label class="text-xs text-slate-500">个人简介</label><textarea id="f-intro" rows="3" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">5年大厂前端开发经验，熟悉 React/Vue 技术栈，主导过多个百万级用户产品。热爱技术、专注产品体验，善于团队协作与技术攻关。</textarea></div>
+              </div>
+            </div>
+
+            <!-- 工作经历 -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 bg-emerald-100 text-emerald-600 text-xs font-bold rounded flex items-center justify-center">2</div>
+                  <h3 class="font-bold text-slate-800">工作经历</h3>
+                </div>
+                <button onclick="addWork()" class="text-xs px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100">+ 添加</button>
+              </div>
+              <div id="work-list" class="pl-8 space-y-4"></div>
+            </div>
+
+            <!-- 教育背景 -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 bg-purple-100 text-purple-600 text-xs font-bold rounded flex items-center justify-center">3</div>
+                  <h3 class="font-bold text-slate-800">教育背景</h3>
+                </div>
+                <button onclick="addEdu()" class="text-xs px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100">+ 添加</button>
+              </div>
+              <div id="edu-list" class="pl-8 space-y-4"></div>
+            </div>
+
+            <!-- 技能 -->
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-6 h-6 bg-amber-100 text-amber-600 text-xs font-bold rounded flex items-center justify-center">4</div>
+                <h3 class="font-bold text-slate-800">专业技能</h3>
+              </div>
+              <div class="pl-8">
+                <label class="text-xs text-slate-500">每行一条，格式「技能 | 熟练度」（熟练度假定为 0-100 数字）</label>
+                <textarea id="f-skills" rows="4" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">JavaScript | 95
+React | 92
+TypeScript | 88
+Vue.js | 85
+Node.js | 78
+Webpack/Vite | 82
+Python | 70</textarea>
+              </div>
+            </div>
+
+            <!-- 项目经验 -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 bg-pink-100 text-pink-600 text-xs font-bold rounded flex items-center justify-center">5</div>
+                  <h3 class="font-bold text-slate-800">项目经验</h3>
+                </div>
+                <button onclick="addProj()" class="text-xs px-3 py-1.5 bg-pink-50 text-pink-600 rounded-lg hover:bg-pink-100">+ 添加</button>
+              </div>
+              <div id="proj-list" class="pl-8 space-y-4"></div>
+            </div>
+
+            <!-- 其他信息 -->
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-6 h-6 bg-cyan-100 text-cyan-600 text-xs font-bold rounded flex items-center justify-center">6</div>
+                <h3 class="font-bold text-slate-800">其他信息</h3>
+              </div>
+              <div class="grid grid-cols-2 gap-3 pl-8">
+                <div><label class="text-xs text-slate-500">证书（每行一条）</label><textarea id="f-certs" rows="3" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">软件设计师（中级）
+CET-6 英语六级
+PMP 项目管理</textarea></div>
+                <div><label class="text-xs text-slate-500">兴趣爱好（每行一条）</label><textarea id="f-hobbies" rows="3" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">开源项目贡献
+摄影
+马拉松</textarea></div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-2 border-t border-slate-100">
+              <div class="flex items-center gap-2 mb-2">
+                <label class="text-sm text-slate-600">模板主题：</label>
+                <select id="f-theme" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm">
+                  <option value="simple">简约蓝色</option>
+                  <option value="professional">专业深灰</option>
+                  <option value="creative">创意彩色</option>
+                </select>
+              </div>
+              <button onclick="updatePreview()" class="w-full py-2.5 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700">↻ 更新预览</button>
+              <button onclick="exportPDF()" class="w-full py-2.5 bg-emerald-600 text-white rounded-lg font-bold text-sm hover:bg-emerald-700">📄 导出 PDF（浏览器打印）</button>
+              <p class="text-xs text-slate-400 text-center pt-2">💡 点击导出后会进入浏览器打印界面，直接选择「保存为 PDF」即可</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧预览区 -->
+        <div class="flex-1 bg-slate-100 rounded-2xl p-5 min-h-[85vh] overflow-y-auto">
+          <div class="text-center mb-4 text-sm text-slate-500">📝 简历预览（A4 纸） — 请先在左侧填写，然后点「更新预览」</div>
+          <div id="resume-preview" class="a4"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============= 页面 4：Pro 会员 ============= -->
+    <div id="page-pro" class="page hidden">
+      <section class="text-center py-10">
+        <div class="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">✨ Pro 会员</div>
+        <h2 class="text-4xl font-bold text-slate-800 mb-3">解锁全部模板与高级功能</h2>
+        <p class="text-slate-500 text-lg">精美简历 + 云端同步 + 专属设计，让你的简历脱颖而出</p>
+      </section>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+          <div class="text-slate-500 font-bold mb-2">免费版</div>
+          <div class="text-5xl font-bold text-slate-800 mb-1">¥0<span class="text-base text-slate-500 font-normal">/永久免费</span></div>
+          <p class="text-sm text-slate-400 mb-6">适合初次体验的用户</p>
+          <ul class="space-y-3 text-slate-600 text-sm mb-8">
+            <li>✓ 基础模板（10 套）</li>
+            <li>✓ 在线编辑</li>
+            <li>✓ 导出 PDF（带标识）</li>
+            <li class="text-slate-400">✗ Pro 专属模板</li>
+            <li class="text-slate-400">✗ 云端同步</li>
+            <li class="text-slate-400">✗ 自定义字体颜色</li>
+          </ul>
+          <button onclick="showPage('builder')" class="w-full py-3 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50">开始使用</button>
+        </div>
+
+        <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 rounded-3xl p-8 shadow-2xl text-white relative overflow-hidden">
+          <div class="absolute top-4 right-4 text-xs bg-white/20 backdrop-blur px-3 py-1 rounded-full font-semibold">🔥 限时优惠</div>
+          <div class="text-amber-100 font-bold mb-2">Pro 会员</div>
+          <div class="text-5xl font-bold mb-1">¥19<span class="text-base opacity-80 font-normal">/月（原价 ¥29）</span></div>
+          <p class="text-sm opacity-90 mb-8">一次订阅，解锁全站功能</p>
+          <ul class="space-y-3 text-sm mb-8">
+            <li>✓ 全部 50+ 模板</li>
+            <li>✓ 无限次导出 PDF（无水印）</li>
+            <li>✓ 云端保存多份简历</li>
+            <li>✓ 多设备同步</li>
+            <li>✓ 自定义字体与主题色</li>
+            <li>✓ 专属客服支持</li>
+          </ul>
+          <button onclick="alert('模拟支付成功！Pro 会员功能需配合完整后端使用，欢迎体验核心功能。')" class="w-full py-3.5 bg-white text-orange-600 rounded-xl font-bold text-lg hover:scale-105 transition-transform">立即升级 Pro →</button>
+        </div>
+      </div>
+
+      <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="text-center p-6 bg-white rounded-2xl"><div class="text-4xl mb-3">🎨</div><h4 class="font-bold text-slate-800 mb-2">海量模板</h4><p class="text-sm text-slate-500">每月持续更新，紧跟行业潮流</p></div>
+        <div class="text-center p-6 bg-white rounded-2xl"><div class="text-4xl mb-3">☁️</div><h4 class="font-bold text-slate-800 mb-2">云端同步</h4><p class="text-sm text-slate-500">PC/手机多端同步，随时继续编辑</p></div>
+        <div class="text-center p-6 bg-white rounded-2xl"><div class="text-4xl mb-3">⚡</div><h4 class="font-bold text-slate-800 mb-2">极速导出</h4><p class="text-sm text-slate-500">专业排版，零水印高清 PDF</p></div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 mt-16 no-print">
+    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+      <p>© 2025 简历模板站 · 本页面为本地预览版，需要完整功能请启动 Node.js 开发服务器</p>
+      <p class="mt-2 text-xs text-slate-500">技术栈：React + Vite + TailwindCSS + Node.js + Express + SQLite</p>
+    </div>
+  </footer>
+
+<script>
+/* ============ 模板数据 ============ */
+const TEMPLATES = [
+  { id:1, name:'简约经典', cat:'simple', pro:false, color:'#2563eb', desc:'清爽简洁，适合互联网行业' },
+  { id:2, name:'专业商务', cat:'professional', pro:false, color:'#1e293b', desc:'稳重商务风，适合金融/管理岗位' },
+  { id:3, name:'创意多彩', cat:'creative', pro:false, color:'#7c3aed', desc:'时尚活泼，适合设计/创意行业' },
+  { id:4, name:'技术大牛', cat:'tech', pro:true, color:'#059669', desc:'极客风格，适合研发/技术岗位' },
+  { id:5, name:'管理精英', cat:'management', pro:true, color:'#dc2626', desc:'简约大气，适合管理岗位' },
+  { id:6, name:'极简黑白', cat:'simple', pro:false, color:'#374151', desc:'黑白极简，经典永不过时' },
+];
+const CAT_MAP = { simple:'简约', professional:'专业', creative:'创意', tech:'技术岗', management:'管理岗' };
+
+/* ============ 页面切换 ============ */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById('page-' + name).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event?.target?.classList.add('active');
+  // 默认激活首页按钮样式
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const map = { home:0, templates:1, builder:2, pro:3 };
+    if (b.textContent.includes({home:'首页',templates:'模板',builder:'简历生成',pro:'Pro会员'}[name])) b.classList.add('active');
+  });
+  if (name === 'builder') updatePreview();
+  if (name === 'templates') renderTemplates();
+  window.scrollTo(0, 0);
+}
+
+/* ============ 首页：热门模板 ============ */
+function renderFeatured() {
+  const el = document.getElementById('featured-templates');
+  el.innerHTML = TEMPLATES.slice(0, 5).map(t => `
+    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer border border-slate-100" onclick="useTemplate(${t.id})">
+      <div class="aspect-[3/4] flex items-center justify-center text-white relative" style="background: linear-gradient(135deg, ${t.color}, ${t.color}dd)">
+        ${t.pro ? '<div class="absolute top-3 right-3 bg-amber-400 text-amber-900 text-[10px] px-2 py-0.5 rounded-full font-bold">PRO</div>' : ''}
+        <div class="text-center px-6 opacity-95">
+          <div class="text-lg font-bold mb-2">${t.name}</div>
+          <div class="h-1 bg-white/30 rounded mb-1.5 w-2/3 mx-auto"></div>
+          <div class="h-1 bg-white/30 rounded mb-1.5 w-1/2 mx-auto"></div>
+          <div class="h-1 bg-white/30 rounded w-5/6 mx-auto"></div>
+          <div class="mt-5 text-xs opacity-80">预览</div>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="font-bold text-slate-800 text-sm">${t.name}</div>
+        <div class="text-xs text-slate-500 mt-1">${t.desc}</div>
+        <div class="text-xs text-blue-600 mt-2 font-semibold group-hover:text-blue-700">立即使用 →</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============ 模板列表页 ============ */
+let activeFilters = { cat: 'all', pro: 'all' };
+
+function renderTemplates() {
+  // 过滤选项
+  const catEl = document.getElementById('filter-cat');
+  catEl.innerHTML = [
+    {v:'all',l:'全部'},
+    {v:'simple',l:'简约'},
+    {v:'professional',l:'专业'},
+    {v:'creative',l:'创意'},
+    {v:'tech',l:'技术岗'},
+    {v:'management',l:'管理岗'},
+  ].map(o => `<label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 px-2 py-1.5 rounded">
+    <input type="radio" name="cat" value="${o.v}" ${activeFilters.cat===o.v?'checked':''} onchange="activeFilters.cat='${o.v}';renderTemplates();"/> ${o.l}</label>`).join('');
+
+  const proEl = document.getElementById('filter-pro');
+  proEl.innerHTML = [
+    {v:'all',l:'全部'},
+    {v:'false',l:'免费'},
+    {v:'true',l:'Pro 专属'},
+  ].map(o => `<label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 px-2 py-1.5 rounded">
+    <input type="radio" name="pro" value="${o.v}" ${activeFilters.pro===o.v?'checked':''} onchange="activeFilters.pro='${o.v}';renderTemplates();"/> ${o.l}</label>`).join('');
+
+  // 列表渲染
+  const list = TEMPLATES.filter(t =>
+    (activeFilters.cat === 'all' || t.cat === activeFilters.cat) &&
+    (activeFilters.pro === 'all' || String(t.pro) === activeFilters.pro)
+  );
+  document.getElementById('tpl-count').textContent = list.length;
+  document.getElementById('tpl-grid').innerHTML = list.map(t => `
+    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100">
+      <div class="aspect-[3/4] flex items-center justify-center text-white relative" style="background: linear-gradient(135deg, ${t.color}, ${t.color}dd)">
+        ${t.pro ? '<div class="absolute top-3 right-3 bg-amber-400 text-amber-900 text-[10px] px-2 py-0.5 rounded-full font-bold">PRO</div>' : ''}
+        <div class="text-center px-6 opacity-95">
+          <div class="text-lg font-bold mb-3">${t.name}</div>
+          <div class="space-y-1.5 opacity-80">
+            <div class="h-1 bg-white/30 rounded w-2/3 mx-auto"></div>
+            <div class="h-1 bg-white/30 rounded w-1/2 mx-auto"></div>
+            <div class="h-1 bg-white/30 rounded w-5/6 mx-auto"></div>
+            <div class="h-1 bg-white/30 rounded w-2/3 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-1">
+          <div class="font-bold text-slate-800">${t.name}</div>
+          <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${CAT_MAP[t.cat]||t.cat}</span>
+        </div>
+        <div class="text-xs text-slate-500 mt-1 mb-3">${t.desc}</div>
+        <button onclick="useTemplate(${t.id})" class="w-full py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">立即使用</button>
+      </div>
+    </div>
+  `).join('') || '<div class="col-span-full text-center py-12 text-slate-400">暂无符合条件的模板</div>';
+}
+function resetFilter() { activeFilters = { cat:'all', pro:'all' }; renderTemplates(); }
+function useTemplate(id) {
+  const t = TEMPLATES.find(x => x.id === id);
+  if (t) document.getElementById('f-theme').value = t.cat === 'tech' || t.cat === 'management' ? 'professional' : t.cat === 'creative' ? 'creative' : 'simple';
+  showPage('builder');
+}
+
+/* ============ 简历生成器：动态表单 ============ */
+let works = [
+  { company:'某互联网科技公司', role:'高级前端工程师', time:'2022.06 - 至今', desc:'主导公司核心产品前端架构升级，将首屏加载时间从 4.2s 优化到 1.1s，用户留存提升 18%。\n负责公司通用组件库（30+ 组件）设计与维护，累计被 12 个业务线复用。\n推动团队接入 TypeScript，代码质量显著提升，线上 bug 下降 40%。' },
+  { company:'某创业公司', role:'前端工程师', time:'2020.03 - 2022.05', desc:'独立负责产品主站搭建（React + Redux），上线后月活用户突破 10 万。\n与设计师合作搭建 UI 设计系统，统一团队设计规范。' }
+];
+let edus = [
+  { school:'上海交通大学', major:'计算机科学与技术', degree:'本科', time:'2016.09 - 2020.06' }
+];
+let projs = [
+  { name:'企业级低代码平台', role:'前端技术负责人', desc:'基于 React 打造拖拽式页面搭建系统，支持组件嵌套、状态绑定等高级功能。\n系统上线后累计为公司节约开发人力 2000+ 人时。', result:'获公司年度技术创新奖' },
+  { name:'电商活动页生成系统', role:'核心开发', desc:'从 0 到 1 设计活动页可视化配置系统，模板覆盖首页/专题页等 20+ 场景。\n活动运营搭建时间从 1 天缩短到 30 分钟。', result:'GMV 提升 ¥500万+' }
+];
+
+function renderWorks() {
+  const el = document.getElementById('work-list');
+  el.innerHTML = works.map((w, i) => `
+    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-xs font-bold text-emerald-600">工作经历 #${i+1}</div>
+        <button onclick="works.splice(${i},1);renderWorks();updatePreview();" class="text-xs text-red-500 hover:text-red-700">× 删除</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${w.company}" oninput="works[${i}].company=this.value;updatePreview();" placeholder="公司名称"/>
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${w.role}" oninput="works[${i}].role=this.value;updatePreview();" placeholder="职位"/>
+        <input class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${w.time}" oninput="works[${i}].time=this.value;updatePreview();" placeholder="时间段（如 2022.06 - 至今）"/>
+        <textarea class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" rows="4" oninput="works[${i}].desc=this.value;updatePreview();" placeholder="工作描述（支持多行，每行一条描述）">${w.desc}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+function addWork() {
+  if (works.length >= 5) return alert('最多 5 条工作经历');
+  works.push({ company:'', role:'', time:'', desc:'' });
+  renderWorks();
+}
+
+function renderEdus() {
+  document.getElementById('edu-list').innerHTML = edus.map((e, i) => `
+    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-xs font-bold text-purple-600">教育背景 #${i+1}</div>
+        <button onclick="edus.splice(${i},1);renderEdus();updatePreview();" class="text-xs text-red-500">× 删除</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${e.school}" oninput="edus[${i}].school=this.value;updatePreview();" placeholder="学校"/>
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${e.major}" oninput="edus[${i}].major=this.value;updatePreview();" placeholder="专业"/>
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${e.degree}" oninput="edus[${i}].degree=this.value;updatePreview();" placeholder="学位"/>
+        <input class="w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${e.time}" oninput="edus[${i}].time=this.value;updatePreview();" placeholder="时间段"/>
+      </div>
+    </div>
+  `).join('');
+}
+function addEdu() {
+  if (edus.length >= 3) return alert('最多 3 条教育背景');
+  edus.push({ school:'', major:'', degree:'', time:'' });
+  renderEdus();
+}
+
+function renderProjs() {
+  document.getElementById('proj-list').innerHTML = projs.map((p, i) => `
+    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-xs font-bold text-pink-600">项目经验 #${i+1}</div>
+        <button onclick="projs.splice(${i},1);renderProjs();updatePreview();" class="text-xs text-red-500">× 删除</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <input class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${p.name}" oninput="projs[${i}].name=this.value;updatePreview();" placeholder="项目名称"/>
+        <input class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${p.role}" oninput="projs[${i}].role=this.value;updatePreview();" placeholder="你的角色"/>
+        <textarea class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" rows="3" oninput="projs[${i}].desc=this.value;updatePreview();" placeholder="项目描述">${p.desc}</textarea>
+        <input class="col-span-2 w-full px-2.5 py-2 border border-slate-200 rounded-lg text-sm" value="${p.result}" oninput="projs[${i}].result=this.value;updatePreview();" placeholder="成果/亮点（可选）"/>
+      </div>
+    </div>
+  `).join('');
+}
+function addProj() {
+  projs.push({ name:'', role:'', desc:'', result:'' });
+  renderProjs();
+}
+
+/* ============ 简历预览渲染 ============ */
+function val(id) { return document.getElementById(id).value.trim(); }
+
+function updatePreview() {
+  const name = val('f-name') || '你的姓名';
+  const job = val('f-job');
+  const phone = val('f-phone');
+  const email = val('f-email');
+  const city = val('f-city');
+  const intro = val('f-intro');
+  const theme = val('f-theme');
+  const skills = val('f-skills').split('\n').map(s => s.trim()).filter(Boolean).map(line => {
+    const [skill, level] = line.split('|').map(s => s.trim());
+    return { skill, level: Number(level) || 80 };
+  });
+  const certs = val('f-certs').split('\n').map(s => s.trim()).filter(Boolean);
+  const hobbies = val('f-hobbies').split('\n').map(s => s.trim()).filter(Boolean);
+
+  // 主题色配置
+  const THEMES = {
+    simple: { primary:'#2563eb', secondary:'#60a5fa', bgBar:'#eff6ff', nameColor:'#1e3a8a', headingColor:'#2563eb', borderColor:'#dbeafe' },
+    professional: { primary:'#1e293b', secondary:'#475569', bgBar:'#f1f5f9', nameColor:'#0f172a', headingColor:'#1e293b', borderColor:'#cbd5e1' },
+    creative: { primary:'#7c3aed', secondary:'#f59e0b', bgBar:'#faf5ff', nameColor:'#4c1d95', headingColor:'#7c3aed', borderColor:'#e9d5ff' }
+  };
+  const C = THEMES[theme] || THEMES.simple;
+
+  const el = document.getElementById('resume-preview');
+
+  if (theme === 'creative') {
+    // 创意风格：左侧彩色边栏 + 右侧内容
+    el.innerHTML = `
+      <div style="display:flex; min-height:297mm;">
+        <aside style="width:70mm; background: linear-gradient(180deg, ${C.primary}, #ec4899); color: white; padding: 14mm 8mm;">
+          <div style="text-align:center; padding: 10mm 0; border-bottom: 1px solid rgba(255,255,255,0.25);">
+            <div style="font-size:22px; font-weight:800; letter-spacing:1px;">${name}</div>
+            ${job ? `<div style="font-size:12px; opacity:.95; margin-top:4px;">${job}</div>` : ''}
+          </div>
+          <div style="margin-top: 14mm; font-size: 12px; line-height: 1.9;">
+            ${phone ? `<div>📱 ${phone}</div>` : ''}
+            ${email ? `<div>✉️ ${email}</div>` : ''}
+            ${city ? `<div>📍 ${city}</div>` : ''}
+          </div>
+          ${skills.length ? `
+            <div style="margin-top: 14mm;">
+              <div style="font-size: 13px; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; opacity: .95;">专业技能</div>
+              <div style="font-size: 11px; line-height: 2;">
+                ${skills.map(s => `<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;"><span>${s.skill}</span><span style="opacity:.8">${s.level}%</span></div>
+                <div style="height:3px; background: rgba(255,255,255,0.2); border-radius:2px; margin-bottom:6px; overflow:hidden;"><div style="height:100%; width:${s.level}%; background: white; border-radius:2px;"></div></div>`).join('')}
+              </div>
+            </div>` : ''}
+          ${certs.length ? `
+            <div style="margin-top: 14mm;">
+              <div style="font-size: 13px; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; opacity: .95;">证书</div>
+              <div style="font-size: 11px; line-height: 2;">${certs.map(c => `▸ ${c}`).join('<br/>')}</div>
+            </div>` : ''}
+          ${hobbies.length ? `
+            <div style="margin-top: 14mm;">
+              <div style="font-size: 13px; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; opacity: .95;">兴趣爱好</div>
+              <div style="font-size: 11px; line-height: 2;">${hobbies.map(h => `▸ ${h}`).join('<br/>')}</div>
+            </div>` : ''}
+        </aside>
+        <main style="flex:1; padding: 14mm 12mm; background: white; color: #1f2937; font-size: 11.5pt; line-height: 1.75;">
+          ${intro ? `<section style="margin-bottom: 8mm;">
+            <h3 style="color:${C.primary}; font-size: 14pt; font-weight: 800; letter-spacing: 2px; border-bottom: 3px solid ${C.primary}; padding-bottom: 3px; margin-bottom: 5px; display:inline-block;">个人简介</h3>
+            <p style="margin-top: 5mm; font-size: 11pt; line-height: 1.85; color: #475569;">${intro.replace(/\n/g,'<br/>')}</p>
+          </section>` : ''}
+          ${works.length ? `<section style="margin-bottom: 8mm;">
+            <h3 style="color:${C.primary}; font-size: 14pt; font-weight: 800; letter-spacing: 2px; border-bottom: 3px solid ${C.primary}; padding-bottom: 3px; margin-bottom: 5px; display:inline-block;">工作经历</h3>
+            ${works.map(w => w.company ? `<div style="margin-top: 5mm; padding-left: 6mm; border-left: 3px dashed ${C.secondary};">
+              <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                <div style="font-weight: 800; color:${C.primary}; font-size: 12.5pt;">${w.company}</div>
+                <div style="color: #64748b; font-size: 10pt;">${w.time}</div>
+              </div>
+              <div style="color: ${C.secondary}; font-weight: 700; margin-top: 2px; font-size: 11pt;">${w.role}</div>
+              <div style="margin-top: 3mm; font-size: 10.5pt; color: #334155; line-height: 1.8;">${w.desc.replace(/\n/g,'<br/>')}</div>
+            </div>` : '').join('')}
+          </section>` : ''}
+          ${projs.length ? `<section style="margin-bottom: 8mm;">
+            <h3 style="color:${C.primary}; font-size: 14pt; font-weight: 800; letter-spacing: 2px; border-bottom: 3px solid ${C.primary}; padding-bottom: 3px; margin-bottom: 5px; display:inline-block;">项目经验</h3>
+            ${projs.map(p => p.name ? `<div style="margin-top: 5mm; padding-left: 6mm; border-left: 3px dashed ${C.secondary};">
+              <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                <div style="font-weight: 800; color:${C.primary}; font-size: 12.5pt;">${p.name}</div>
+                <div style="color: ${C.secondary}; font-size: 10pt; font-weight: 600;">${p.role}</div>
+              </div>
+              <div style="margin-top: 3mm; font-size: 10.5pt; color: #334155; line-height: 1.8;">${p.desc.replace(/\n/g,'<br/>')}</div>
+              ${p.result ? `<div style="margin-top: 2mm; font-size: 10.5pt; color: #ec4899; font-weight: 700;">🏆 ${p.result}</div>` : ''}
+            </div>` : '').join('')}
+          </section>` : ''}
+          ${edus.length ? `<section>
+            <h3 style="color:${C.primary}; font-size: 14pt; font-weight: 800; letter-spacing: 2px; border-bottom: 3px solid ${C.primary}; padding-bottom: 3px; margin-bottom: 5px; display:inline-block;">教育背景</h3>
+            ${edus.map(e => e.school ? `<div style="margin-top: 5mm; padding-left: 6mm; border-left: 3px dashed ${C.secondary};">
+              <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                <div style="font-weight: 800; color:${C.primary}; font-size: 12pt;">${e.school}</div>
+                <div style="color: #64748b; font-size: 10pt;">${e.time}</div>
+              </div>
+              <div style="color: ${C.secondary}; margin-top: 2px; font-size: 10.5pt;">${e.major} · ${e.degree}</div>
+            </div>` : '').join('')}
+          </section>` : ''}
+        </main>
+      </div>
+    `;
+  } else {
+    // 简约 / 专业：经典两栏（左窄边栏 + 主内容）
+    el.innerHTML = `
+      <div>
+        <!-- 头部 -->
+        <header style="padding-bottom: 4mm; border-bottom: 4px solid ${C.primary}; margin-bottom: 6mm;">
+          <div style="font-size: 28pt; font-weight: 900; color: ${C.nameColor}; letter-spacing: 2px;">${name}</div>
+          ${job ? `<div style="font-size: 13pt; color: ${C.primary}; font-weight: 700; margin-top: 2mm; letter-spacing: 1px;">${job}</div>` : ''}
+          <div style="font-size: 10pt; color: #64748b; margin-top: 3mm; display: flex; gap: 8mm; flex-wrap: wrap;">
+            ${phone ? `<span>📱 ${phone}</span>` : ''}
+            ${email ? `<span>✉️ ${email}</span>` : ''}
+            ${city ? `<span>📍 ${city}</span>` : ''}
+          </div>
+        </header>
+
+        ${intro ? `<section style="margin-bottom: 6mm;">
+          <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">个人简介</h3>
+          <p style="font-size: 10.5pt; color: #374151; line-height: 1.85;">${intro.replace(/\n/g,'<br/>')}</p>
+        </section>` : ''}
+
+        ${works.length ? `<section style="margin-bottom: 6mm;">
+          <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">工作经历</h3>
+          ${works.map(w => w.company ? `
+            <div style="margin-bottom: 4mm;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-weight: 800; color: ${C.primary}; font-size: 12pt;">${w.company}</div>
+                <div style="font-size: 9.5pt; color: #64748b;">${w.time}</div>
+              </div>
+              <div style="color: #475569; font-size: 10.5pt; font-weight: 600; margin-top: 1mm;">${w.role}</div>
+              <div style="font-size: 10pt; color: #374151; line-height: 1.85; margin-top: 2mm;">${w.desc.replace(/\n/g,'<br/>')}</div>
+            </div>` : '').join('')}
+        </section>` : ''}
+
+        ${projs.length ? `<section style="margin-bottom: 6mm;">
+          <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">项目经验</h3>
+          ${projs.map(p => p.name ? `
+            <div style="margin-bottom: 4mm;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-weight: 800; color: ${C.primary}; font-size: 11.5pt;">${p.name}</div>
+                <div style="font-size: 9.5pt; color: ${C.primary}; font-weight: 600;">${p.role}</div>
+              </div>
+              <div style="font-size: 10pt; color: #374151; line-height: 1.85; margin-top: 2mm;">${p.desc.replace(/\n/g,'<br/>')}</div>
+              ${p.result ? `<div style="font-size: 10pt; color: ${C.primary}; font-weight: 700; margin-top: 1.5mm;">亮点：${p.result}</div>` : ''}
+            </div>` : '').join('')}
+        </section>` : ''}
+
+        ${edus.length ? `<section style="margin-bottom: 6mm;">
+          <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">教育背景</h3>
+          ${edus.map(e => e.school ? `
+            <div style="margin-bottom: 3mm;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-weight: 800; color: ${C.primary}; font-size: 11.5pt;">${e.school}</div>
+                <div style="font-size: 9.5pt; color: #64748b;">${e.time}</div>
+              </div>
+              <div style="font-size: 10pt; color: #475569; margin-top: 1mm;">${e.major} · ${e.degree}</div>
+            </div>` : '').join('')}
+        </section>` : ''}
+
+        ${skills.length ? `<section style="margin-bottom: 6mm;">
+          <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">专业技能</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 8mm; font-size: 10pt; color: #374151;">
+            ${skills.map(s => `<div style="display: flex; align-items: center; justify-content: space-between; gap: 4mm;">
+              <span style="font-weight: 600;">${s.skill}</span>
+              <div style="flex: 1; height: 3.5px; background: ${C.borderColor}; border-radius: 2px; overflow: hidden; max-width: 60mm;">
+                <div style="height: 100%; width: ${s.level}%; background: ${C.primary}; border-radius: 2px;"></div>
+              </div>
+            </div>`).join('')}
+          </div>
+        </section>` : ''}
+
+        ${(certs.length || hobbies.length) ? `<section style="display: grid; grid-template-columns: 1fr 1fr; gap: 8mm;">
+          ${certs.length ? `<div>
+            <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">证书资质</h3>
+            <div style="font-size: 10pt; color: #374151; line-height: 1.9;">${certs.map(c => `▸ ${c}`).join('<br/>')}</div>
+          </div>` : ''}
+          ${hobbies.length ? `<div>
+            <h3 style="color: ${C.headingColor}; font-size: 12pt; font-weight: 800; letter-spacing: 2px; border-left: 4px solid ${C.primary}; padding-left: 3mm; margin-bottom: 3mm;">兴趣爱好</h3>
+            <div style="font-size: 10pt; color: #374151; line-height: 1.9;">${hobbies.map(h => `▸ ${h}`).join('<br/>')}</div>
+          </div>` : ''}
+        </section>` : ''}
+      </div>
+    `;
+  }
+}
+
+function exportPDF() {
+  window.print();
+}
+
+/* ============ 初始化 ============ */
+renderFeatured();
+renderWorks();
+renderEdus();
+renderProjs();
+updatePreview();
+
+// 字段输入时自动更新预览（防抖）
+document.addEventListener('input', (e) => {
+  if (e.target.closest('#page-builder')) {
+    clearTimeout(window._previewTimer);
+    window._previewTimer = setTimeout(updatePreview, 250);
+  }
+});
+</script>
+</body>
+</html>
