@@ -1,0 +1,16 @@
+{
+  "name": "resume-template-station",
+  "version": "1.0.0",
+  "description": "专业简历制作平台，100+精美模板，在线编辑，一键导出PDF",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3"
+  }
+}
